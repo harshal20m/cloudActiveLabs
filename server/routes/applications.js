@@ -4,6 +4,7 @@ import {
   submitApplication,
   getApplications,
   updateApplicationStatus,
+  getMyApplications,
 } from "../controllers/applicationController.js";
 import { protect, adminOnly } from "../middleware/auth.js";
 
@@ -17,6 +18,7 @@ const applicationValidation = [
 
 router.post("/:jobId", applicationValidation, submitApplication);
 router.get("/", protect, adminOnly, getApplications);
+router.get("/my/:email", getMyApplications); // Add this route
 router.patch("/:id/status", protect, adminOnly, updateApplicationStatus);
 
 export default router;

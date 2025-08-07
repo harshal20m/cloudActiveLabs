@@ -71,3 +71,17 @@ export const updateApplicationStatus = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export const getMyApplications = async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    const applications = await Application.find({ email })
+      .populate("jobId", "title company location remote isActive")
+      .sort({ createdAt: -1 });
+
+    res.json(applications);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};

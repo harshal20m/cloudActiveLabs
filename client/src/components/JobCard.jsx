@@ -1,5 +1,5 @@
 import React from "react";
-import { MapPin, Building, Clock, DollarSign } from "lucide-react";
+import { MapPin, Building, Clock, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const JobCard = ({ job }) => {
@@ -66,7 +66,7 @@ const JobCard = ({ job }) => {
 
           {formatSalary(job.salary) && (
             <div className="flex items-center gap-1 text-sm text-gray-600">
-              <DollarSign className="w-4 h-4" />
+              <IndianRupee className="w-4 h-4" />
               <span>{formatSalary(job.salary)}</span>
             </div>
           )}

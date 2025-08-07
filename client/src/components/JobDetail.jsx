@@ -2,11 +2,10 @@ import React from "react";
 import {
   MapPin,
   Building,
-  Clock,
-  DollarSign,
   Users,
   Globe,
   Calendar,
+  IndianRupee,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -77,7 +76,7 @@ const JobDetail = ({ job }) => {
 
           {formatSalary(job.salary) && (
             <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <DollarSign className="w-6 h-6 mx-auto mb-2 text-gray-600" />
+              <IndianRupee className="w-6 h-6 mx-auto mb-2 text-gray-600" />
               <div className="text-sm text-gray-600">Salary</div>
               <div className="font-medium">{formatSalary(job.salary)}</div>
             </div>

@@ -206,19 +206,33 @@ const seedDatabase = async () => {
     await User.deleteMany({});
     console.log("Cleared existing data");
 
-    const createdUsers = await User.insertMany(sampleUsers);
-    console.log(`Created ${createdUsers.length} users`);
+    // ✅ FIXED: Create users individually to trigger pre-save middleware
+    const createdUsers = [];
+    for (const userData of sampleUsers) {
+      const user = new User(userData);
+      const savedUser = await user.save(); // This triggers the pre-save hook
+      createdUsers.push(savedUser);
+      console.log(`Created user: ${savedUser.email} (password hashed)`);
+    }
+
+    console.log(`Created ${createdUsers.length} users with hashed passwords`);
 
     const createdJobs = await Job.insertMany(sampleJobs);
     console.log(`Created ${createdJobs.length} jobs`);
 
     console.log("Database seeded successfully!");
     console.log("\nSample data includes:");
-    console.log("- 10 diverse job listings");
+
     console.log("- 2 users (1 admin, 1 regular user)");
     console.log("\nAdmin credentials:");
     console.log("Email: admin@jobboard.com");
     console.log("Password: admin123");
+
+    // ✅ Verify the passwords are hashed
+    const adminUser = await User.findOne({ email: "admin@jobboard.com" });
+    console.log("\nPassword verification:");
+    console.log("Admin password hash:", adminUser.password);
+    console.log("Is hashed?", adminUser.password !== "admin123");
 
     process.exit(0);
   } catch (error) {
