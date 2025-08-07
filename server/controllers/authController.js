@@ -53,7 +53,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const errors = validationResult(req);
-    console.log(req.body);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -69,7 +69,6 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-    console.log("done");
 
     const token = generateToken(user._id);
 

@@ -117,7 +117,15 @@ const PublicLayout = () => {
 
       <footer className="bg-white border-t mt-16">
         <div className="max-w-7xl mx-auto px-4 py-8 text-center text-gray-600">
-          <p>&copy; 2024 JobBoard. Built with React, Node.js, and MongoDB.</p>
+          <p>
+            &copy; 2025 JobBoard by :{" "}
+            <a
+              href="https://harshalmali.online"
+              className="text-blue-700 underline"
+            >
+              <strong>HM</strong>
+            </a>
+          </p>
         </div>
       </footer>
     </>

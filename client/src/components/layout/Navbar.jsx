@@ -11,6 +11,8 @@ import {
   Phone,
   Info,
   ChevronDown,
+  LogOut,
+  Settings,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -112,15 +114,6 @@ const Navbar = () => {
                           {user?.role}
                         </span>
                       </div>
-
-                      <Link
-                        to="/profile"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <User className="inline w-4 h-4 mr-2" />
-                        Profile
-                      </Link>
 
                       <Link
                         to="/my-applications"

@@ -53,10 +53,7 @@ const JobDetail = ({ job }) => {
             </div>
           </div>
 
-          <Link
-            to={`/apply/${job._id}`}
-            className="btn-primary px-8 py-3 text-lg"
-          >
+          <Link to={`/apply/${job._id}`} className="btn-primary   text-sm">
             Apply Now
           </Link>
         </div>
