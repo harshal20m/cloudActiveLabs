@@ -17,7 +17,9 @@ app.use(cors());
 app.use(
   cors({
     origin:
-      process.env.NODE_ENV === "production" ? [""] : ["http://localhost:5173"],
+      process.env.NODE_ENV === "production"
+        ? ["https://cloudactivelabsassignment.netlify.app/"]
+        : ["http://localhost:5173"],
     credentials: true,
   })
 );
