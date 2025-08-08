@@ -50,14 +50,12 @@ function App() {
                 <Route path="apply/:jobId" element={<ApplyJob />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="contact" element={<ContactPage />} />
-                {/* Routes under development */}
 
                 <Route path="profile" element={<ProfilePage />} />
                 <Route
                   path="my-applications"
                   element={<MyApplicationsPage />}
                 />
-                {/* Alternative jobs route */}
               </Route>
 
               <Route
@@ -79,10 +77,6 @@ function App() {
                 <Route path="users" element={<FeatureInDevelopment />} />
                 <Route path="messages" element={<FeatureInDevelopment />} />
 
-                <Route
-                  path="notifications"
-                  element={<FeatureInDevelopment />}
-                />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route
                   path="jobs/archived"

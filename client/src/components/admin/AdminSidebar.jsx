@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -13,9 +13,80 @@ import {
   Plus,
   ChevronRight,
 } from "lucide-react";
+import { jobAPI, applicationAPI } from "../../services/api";
 
 const AdminSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const [stats, setStats] = useState([
+    { label: "Active Jobs", value: "...", color: "text-green-600" },
+    { label: "New Applications", value: "...", color: "text-blue-600" },
+    { label: "Pending Reviews", value: "...", color: "text-orange-600" },
+  ]);
+  const [statsLoading, setStatsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStats();
+
+    // Refresh stats every 30 seconds
+    const interval = setInterval(fetchStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      setStatsLoading(true);
+
+      // Fetch jobs data
+      const jobsResponse = await jobAPI.getAllJobsForAdmin({ limit: 1000 });
+      const allJobs = jobsResponse.data.jobs || [];
+      const activeJobs = allJobs.filter((job) => job.isActive).length;
+
+      // Fetch applications data
+      const applicationsResponse = await applicationAPI.getApplications();
+      const allApplications = applicationsResponse.data || [];
+
+      // Get applications from last 7 days
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      const newApplications = allApplications.filter(
+        (app) => new Date(app.createdAt) >= sevenDaysAgo
+      ).length;
+
+      const pendingReviews = allApplications.filter(
+        (app) => app.status === "pending"
+      ).length;
+
+      // Update stats
+      setStats([
+        {
+          label: "Active Jobs",
+          value: activeJobs.toString(),
+          color: "text-green-600",
+        },
+        {
+          label: "New Applications",
+          value: newApplications.toString(),
+          color: "text-blue-600",
+        },
+        {
+          label: "Pending Reviews",
+          value: pendingReviews.toString(),
+          color: "text-orange-600",
+        },
+      ]);
+    } catch (error) {
+      console.error("Error fetching sidebar stats:", error);
+      // Keep loading state or show error state
+      setStats([
+        { label: "Active Jobs", value: "N/A", color: "text-gray-500" },
+        { label: "New Applications", value: "N/A", color: "text-gray-500" },
+        { label: "Pending Reviews", value: "N/A", color: "text-gray-500" },
+      ]);
+    } finally {
+      setStatsLoading(false);
+    }
+  };
 
   const isActive = (href) => {
     if (href === "/admin") return location.pathname === "/admin";
@@ -72,12 +143,6 @@ const AdminSidebar = ({ isOpen, onClose }) => {
     },
   ];
 
-  const stats = [
-    { label: "Active Jobs", value: "24", color: "text-green-600" },
-    { label: "New Applications", value: "12", color: "text-blue-600" },
-    { label: "Pending Reviews", value: "8", color: "text-orange-600" },
-  ];
-
   return (
     <>
       {/* Mobile Overlay */}
@@ -118,18 +183,36 @@ const AdminSidebar = ({ isOpen, onClose }) => {
 
         {/* Quick Stats */}
         <div className="p-4 bg-gray-50 border-b">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-            Quick Stats
-          </h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              Quick Stats
+            </h3>
+            {statsLoading && (
+              <div className="w-3 h-3 border border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+            )}
+          </div>
           <div className="space-y-2">
             {stats.map((stat, index) => (
               <div key={index} className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">{stat.label}</span>
-                <span className={`text-sm font-semibold ${stat.color}`}>
+                <span
+                  className={`text-sm font-semibold ${stat.color} ${
+                    statsLoading ? "animate-pulse" : ""
+                  }`}
+                >
                   {stat.value}
                 </span>
               </div>
             ))}
+          </div>
+          <div className="mt-3 pt-2 border-t border-gray-200">
+            <button
+              onClick={fetchStats}
+              className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+              disabled={statsLoading}
+            >
+              {statsLoading ? "Updating..." : "Refresh"}
+            </button>
           </div>
         </div>
 
