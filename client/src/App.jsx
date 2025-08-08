@@ -9,11 +9,12 @@ import { Toaster } from "react-hot-toast";
 import { JobProvider } from "./context/JobContext";
 import { AuthProvider } from "./context/AuthContext";
 
-import JobListings from "./pages/JobListings";
 import JobDetails from "./pages/JobDetails";
 import ApplyJob from "./pages/ApplyJob";
 import LoginForm from "./components/auth/LoginForm";
+import RegisterForm from "./components/auth/RegisterForm";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import ProfilePage from "./pages/Profile";
 
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -27,6 +28,10 @@ import FeatureInDevelopment from "./components/common/FeatureInDevelopment";
 import NotFound from "./components/common/NotFound";
 import Navbar from "./components/layout/Navbar";
 import MyApplicationsPage from "./pages/MyApplications";
+import Jobs from "./pages/Jobs";
+import Home from "./pages/Home";
+import AboutPage from "./pages/About";
+import ContactPage from "./pages/Contact";
 
 function App() {
   return (
@@ -36,21 +41,22 @@ function App() {
           <div className="min-h-screen bg-gray-50">
             <Routes>
               <Route path="/login" element={<LoginForm />} />
+              <Route path="/register" element={<RegisterForm />} />
 
               <Route path="/" element={<PublicLayout />}>
-                <Route index element={<JobListings />} />
+                <Route index element={<Home />} />
+                <Route path="jobs" element={<Jobs />} />
                 <Route path="jobs/:id" element={<JobDetails />} />
                 <Route path="apply/:jobId" element={<ApplyJob />} />
+                <Route path="about" element={<AboutPage />} />
+                <Route path="contact" element={<ContactPage />} />
                 {/* Routes under development */}
-                <Route path="about" element={<FeatureInDevelopment />} />
-                <Route path="contact" element={<FeatureInDevelopment />} />
-                <Route path="profile" element={<FeatureInDevelopment />} />
+
+                <Route path="profile" element={<ProfilePage />} />
                 <Route
                   path="my-applications"
                   element={<MyApplicationsPage />}
                 />
-                <Route path="register" element={<FeatureInDevelopment />} />
-                <Route path="jobs" element={<FeatureInDevelopment />} />{" "}
                 {/* Alternative jobs route */}
               </Route>
 
@@ -72,12 +78,12 @@ function App() {
                 <Route path="analytics" element={<FeatureInDevelopment />} />
                 <Route path="users" element={<FeatureInDevelopment />} />
                 <Route path="messages" element={<FeatureInDevelopment />} />
-                <Route path="settings" element={<FeatureInDevelopment />} />
+
                 <Route
                   path="notifications"
                   element={<FeatureInDevelopment />}
                 />
-                <Route path="profile" element={<FeatureInDevelopment />} />
+                <Route path="profile" element={<ProfilePage />} />
                 <Route
                   path="jobs/archived"
                   element={<FeatureInDevelopment />}

@@ -23,29 +23,6 @@ const AdminNavbar = ({ onSidebarToggle }) => {
     window.location.href = "/login";
   };
 
-  const notifications = [
-    {
-      id: 1,
-      message: "New job application received",
-      time: "5 min ago",
-      unread: true,
-    },
-    {
-      id: 2,
-      message: "Job posting approved",
-      time: "1 hour ago",
-      unread: true,
-    },
-    {
-      id: 3,
-      message: "Weekly report available",
-      time: "2 hours ago",
-      unread: false,
-    },
-  ];
-
-  const unreadCount = notifications.filter((n) => n.unread).length;
-
   return (
     <header className="bg-white shadow-sm border-b h-16 flex items-center justify-between px-6 sticky top-0 z-40">
       {/* Left Side */}
@@ -92,71 +69,6 @@ const AdminNavbar = ({ onSidebarToggle }) => {
         </div>
 
         {/* Notifications */}
-        <div className="relative">
-          <button
-            onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-            className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
-          >
-            <Bell className="h-5 w-5" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                {unreadCount}
-              </span>
-            )}
-          </button>
-
-          {isNotificationsOpen && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg border z-50">
-              <div className="p-4 border-b">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium text-gray-900">
-                    Notifications
-                  </h3>
-                  <span className="text-xs text-gray-500">
-                    {unreadCount} unread
-                  </span>
-                </div>
-              </div>
-
-              <div className="max-h-64 overflow-y-auto">
-                {notifications.map((notification) => (
-                  <div
-                    key={notification.id}
-                    className={`p-4 border-b hover:bg-gray-50 cursor-pointer ${
-                      notification.unread ? "bg-blue-50" : ""
-                    }`}
-                  >
-                    <div className="flex items-start space-x-3">
-                      <div
-                        className={`w-2 h-2 rounded-full mt-2 ${
-                          notification.unread ? "bg-blue-500" : "bg-gray-300"
-                        }`}
-                      />
-                      <div className="flex-1">
-                        <p className="text-sm text-gray-900">
-                          {notification.message}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {notification.time}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="p-3 border-t">
-                <Link
-                  to="/admin/notifications"
-                  className="block text-center text-sm text-primary-600 hover:text-primary-700"
-                  onClick={() => setIsNotificationsOpen(false)}
-                >
-                  View all notifications
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
 
         {/* View Site */}
         <Link
@@ -201,16 +113,7 @@ const AdminNavbar = ({ onSidebarToggle }) => {
                   onClick={() => setIsProfileOpen(false)}
                 >
                   <User className="w-4 h-4 mr-3" />
-                  Profile Settings
-                </Link>
-
-                <Link
-                  to="/admin/settings"
-                  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setIsProfileOpen(false)}
-                >
-                  <Settings className="w-4 h-4 mr-3" />
-                  Settings
+                  Profile
                 </Link>
 
                 <hr className="my-1" />
