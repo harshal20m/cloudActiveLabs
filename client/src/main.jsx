@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
+import api from "./services/api.js"; // Import your existing api configuration
 
 const AppWithHealthCheck = () => {
   const [serverReady, setServerReady] = useState(false);
@@ -14,20 +15,20 @@ const AppWithHealthCheck = () => {
     const checkHealth = async () => {
       try {
         console.log(`Health check attempt ${retryCount + 1}`);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout per request
 
-        const response = await fetch("/health", {
-          signal: controller.signal,
+        // Using axios with proper timeout and error handling
+        const response = await api.get("/health", {
+          timeout: 10000, // 10 second timeout per request
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
         });
-        clearTimeout(timeoutId);
 
-        const data = await response.json();
-
-        if (data.status === "OK") {
+        if (response.status === 200 && response.data.status === "OK") {
           setServerReady(true);
           setLoading(false);
-          console.log("✅ Server is ready!");
+          console.log("✅ Server is ready!", response.data);
           return;
         }
       } catch (error) {
